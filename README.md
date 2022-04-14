@@ -3,8 +3,6 @@
 可以像 spring 一样通过注解注入使用控制器
 
 ```ts
-export const router = new Router();
-
 function actionLog(ctx: Context, next: Next) {
   console.log('actionLog middleware')
   return next();
@@ -16,8 +14,8 @@ function loginRequired(ctx: Context, next: Next) {
 }
 
 // 控制器全局中间件
-@controller(router, actionLog)
-class Simpe {
+@controller(actionLog)
+export class Simpe {
   // 自动注入
   @inject
   ctx: Context;
@@ -34,7 +32,7 @@ class Simpe {
   }
 
   // 每个方法都可以自定义中间件
-  @mapping('get', '/aaa', loginRequired)
+  @mapping('GET', '/aaa', loginRequired)
   aaa() {
     this.ctx.body = 'aaa';
   }

@@ -1,6 +1,6 @@
 {
   "name": "@zenweb/controller",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Zenweb Controller module",
   "exports": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "prepublishOnly": "tsc --build --clean && tsc",
+    "prepublishOnly": "rm -fr dist && tsc",
     "dev": "cd example && DEBUG=* ts-node app"
   },
   "author": {

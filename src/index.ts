@@ -2,7 +2,7 @@ import path = require('path');
 import globby = require('globby');
 import { SetupFunction } from '@zenweb/core';
 import { addToRouter } from './controller';
-export * from './controller';
+export { Controller, controller, mapping } from './controller';
 
 export interface ControllerOption {
   discoverPaths?: string[];

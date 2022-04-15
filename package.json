@@ -25,7 +25,7 @@
   "license": "MIT",
   "devDependencies": {
     "@zenweb/core": "^2.4.1",
-    "@zenweb/inject": "^1.0.0",
+    "@zenweb/inject": "^3.1.0",
     "@zenweb/router": "^3.0.0"
   },
   "dependencies": {

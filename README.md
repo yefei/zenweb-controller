@@ -27,8 +27,8 @@ export class Simpe {
 
   // 映射一个路径， 不指定参数默认为 `GET /方法名`
   @mapping()
-  simple() {
-    this.ctx.body = 'simple';
+  simple(ctx: Context) { // 也可以通过方法的参数自动注入
+    ctx.body = 'simple';
   }
 
   // 每个方法都可以自定义中间件

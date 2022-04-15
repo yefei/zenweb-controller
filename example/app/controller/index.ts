@@ -20,14 +20,14 @@ export class Simpe {
   ctx: Context;
 
   @init // 控制器每次被请求时候都会执行
-  init() {
-    console.log('init');
+  init(ctx: Context) {
+    console.log('init', ctx);
   }
 
   // 映射一个路径， 不指定参数默认为 `GET /方法名`
   @mapping()
-  simple() {
-    this.ctx.body = 'simple';
+  simple(ctx: Context) {
+    ctx.body = 'simple';
   }
 
   // 每个方法都可以自定义中间件

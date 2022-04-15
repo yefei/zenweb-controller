@@ -61,7 +61,7 @@ export function mapping({
     const params = Reflect.getMetadata('design:paramtypes', target, propertyKey) || [];
     addControllerMapping(target, {
       methods: method ? (Array.isArray(method) ? method : [method]) : ['GET'],
-      path: path || `/${propertyKey}`,
+      path: path || (propertyKey === 'index' ? '/' : `/${propertyKey}`),
       middleware: middleware ? (Array.isArray(middleware) ? middleware : [middleware]) : [],
       handle: descriptor.value,
       params,

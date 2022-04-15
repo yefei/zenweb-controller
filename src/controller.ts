@@ -4,9 +4,9 @@ import { Router, RouterMethod, RouterPath } from '@zenweb/router';
 const MAPPING = Symbol('Controller#mapping');
 
 interface MappingItem {
-  method: RouterMethod;
+  methods: RouterMethod[];
   path: RouterPath;
-  middleware?: Router.Middleware[];
+  middleware: Router.Middleware[];
   handle: (...args: any[]) => Promise<void> | void;
   params: any[];
 }
@@ -43,17 +43,25 @@ export function addControllerMapping(target: any, item: MappingItem) {
 /**
  * 路由映射
  * 如果方法中存在参数，则自动注入
- * @param method HTTP 方法
- * @param path 路径。如不指定则使用方法名
- * @param middleware 可选中间件
+ * @param arg0.method HTTP 方法，默认 GET
+ * @param arg0.path 路径，默认 /{方法名}
+ * @param arg0.middleware 中间件
  */
-export function mapping(method: RouterMethod = 'GET', path?: RouterPath, ...middleware: Router.Middleware[]) {
+export function mapping({
+  method,
+  path,
+  middleware,
+}: {
+  method?: RouterMethod | RouterMethod[],
+  path?: RouterPath,
+  middleware?: Router.Middleware | Router.Middleware[],
+} = {}) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const params = Reflect.getMetadata('design:paramtypes', target, propertyKey) || [];
     addControllerMapping(target, {
-      method,
+      methods: method ? (Array.isArray(method) ? method : [method]) : ['GET'],
       path: path || `/${propertyKey}`,
-      middleware,
+      middleware: middleware ? (Array.isArray(middleware) ? middleware : [middleware]) : [],
       handle: descriptor.value,
       params,
     });
@@ -85,11 +93,12 @@ export function addToRouter(router: Router, target: any) {
   const mappingList = getControllerMapping(target.prototype);
   if (mappingList) {
     for (const item of mappingList) {
-      router[<'all'>item.method.toLowerCase()](item.path, ...item.middleware, async ctx => {
+      // <any>item.path 实际上路由参数支持数组形式，只是 ts 文件没有正确描述
+      router.register(<any>item.path, item.methods, [...item.middleware, async ctx => {
         const controller = await ctx.injector.getInstance(target);
-        const args: any[] = await Promise.all(item.params.map(i => ctx.injector.getInstance(i)));
+        const args = await Promise.all(item.params.map(i => ctx.injector.getInstance(i)));
         await item.handle.apply(controller, args);
-      });
+      }]);
     }
   }
 }

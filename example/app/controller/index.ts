@@ -21,7 +21,7 @@ export class Simpe {
 
   @init // 控制器每次被请求时候都会执行
   init(ctx: Context) {
-    console.log('init', ctx);
+    console.log('init:', ctx.path);
   }
 
   // 映射一个路径， 不指定参数默认为 `GET /方法名`
@@ -31,7 +31,11 @@ export class Simpe {
   }
 
   // 每个方法都可以自定义中间件
-  @mapping('GET', '/aaa', loginRequired)
+  @mapping({
+    method: ['POST', 'GET'],
+    path: ['/aaa', '/bbb'],
+    middleware: loginRequired,
+  })
   aaa() {
     this.ctx.body = 'aaa';
   }

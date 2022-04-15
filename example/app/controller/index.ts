@@ -13,7 +13,10 @@ function loginRequired(ctx: Context, next: Next) {
 }
 
 // 控制器全局中间件
-@controller(actionLog)
+@controller({
+  prefix: '/prefix',
+  middleware: actionLog,
+})
 export class Simpe {
   // 自动注入
   @inject

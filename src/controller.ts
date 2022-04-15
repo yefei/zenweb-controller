@@ -2,6 +2,7 @@ import { inject, Context } from '@zenweb/inject';
 import { Router, RouterMethod, RouterPath } from '@zenweb/router';
 
 const MAPPING = Symbol('Controller#mapping');
+const OPTION = Symbol('Controller#option');
 
 interface MappingItem {
   methods: RouterMethod[];
@@ -68,20 +69,24 @@ export function mapping({
   }
 }
 
+interface ControlleOption extends Router.RouterOptions {
+  middleware?: Router.Middleware | Router.Middleware[];
+}
+
 /**
- * 控制器
- * @param middleware 控制器中间件
+ * 控制器选项
  */
-export function controller<C>(...middleware: Router.Middleware[]) {
-  return function (controllerClass: ControllerClass<C>) {
-    const mappingList = getControllerMapping(controllerClass.prototype);
-    if (mappingList) {
-      for (const item of mappingList) {
-        // 把控制器的中间件推到方法前
-        item.middleware.unshift(...middleware);
-      }
-    }
+export function controller<C>(opt: ControlleOption) {
+  return function (target: ControllerClass<C>) {
+    Reflect.defineMetadata(OPTION, opt, target);
   };
+}
+
+/**
+ * 取得控制器选项
+ */
+export function getControllerOption(target: any): ControlleOption {
+  return Reflect.getMetadata(OPTION, target);
 }
 
 /**
@@ -92,13 +97,19 @@ export function controller<C>(...middleware: Router.Middleware[]) {
 export function addToRouter(router: Router, target: any) {
   const mappingList = getControllerMapping(target.prototype);
   if (mappingList) {
+    const option = getControllerOption(target);
+    const _router = new Router(option);
+    if (option && option.middleware) {
+      _router.use(...(Array.isArray(option.middleware) ? option.middleware : [option.middleware]));
+    }
     for (const item of mappingList) {
       // <any>item.path 实际上路由参数支持数组形式，只是 ts 文件没有正确描述
-      router.register(<any>item.path, item.methods, [...item.middleware, async ctx => {
+      _router.register(<any>item.path, item.methods, [...item.middleware, async ctx => {
         const controller = await ctx.injector.getInstance(target);
         const args = await Promise.all(item.params.map(i => ctx.injector.getInstance(i)));
         await item.handle.apply(controller, args);
       }]);
     }
+    router.use(_router.routes());
   }
 }

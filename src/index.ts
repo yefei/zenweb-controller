@@ -18,6 +18,7 @@ export default function setup(option?: ControllerOption): SetupFunction {
     setup.debug('option: %o', option);
     setup.checkCoreProperty('router', '@zenweb/router');
     setup.checkCoreProperty('injector', '@zenweb/inject');
+    setup.defineCoreProperty('controller', { value: true });
     if (option.discoverPaths && option.discoverPaths.length) {
       for (const p of option.discoverPaths) {
         for (const file of await globby('**/*.{js,ts}', { cwd: p, absolute: true })) {

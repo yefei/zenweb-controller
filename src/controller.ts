@@ -105,8 +105,7 @@ export function addToRouter(router: Router, target: any) {
       // <any>item.path 实际上路由参数支持数组形式，只是 ts 文件没有正确描述
       _router.register(<any>item.path, item.methods, [...item.middleware, async ctx => {
         const controller = await ctx.injector.getInstance(target);
-        const args = await Promise.all(item.params.map(i => ctx.injector.getInstance(i)));
-        await item.handle.apply(controller, args);
+        ctx.injector.apply(controller, item);
       }]);
     }
     router.use(_router.routes());

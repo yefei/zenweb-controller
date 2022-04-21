@@ -27,7 +27,7 @@ export interface ControllerClass<T> {
  * @returns 
  */
 export function getControllerMapping(target: any): MappingItem[] {
-  return Reflect.getMetadata(MAPPING, target);
+  return Reflect.getMetadata(MAPPING, target) || [];
 }
 
 /**
@@ -36,8 +36,7 @@ export function getControllerMapping(target: any): MappingItem[] {
  * @param item 
  */
 export function addControllerMapping(target: any, item: MappingItem) {
-  const list = getControllerMapping(target) || [];
-  list.push(item);
+  const list = [...getControllerMapping(target), item];
   Reflect.defineMetadata(MAPPING, list, target);
 }
 
@@ -58,7 +57,7 @@ export function mapping({
   middleware?: Router.Middleware | Router.Middleware[],
 } = {}) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    const params = Reflect.getMetadata('design:paramtypes', target, propertyKey) || [];
+    const params = Reflect.getOwnMetadata('design:paramtypes', target, propertyKey) || [];
     addControllerMapping(target, {
       methods: method ? (Array.isArray(method) ? method : [method]) : ['GET'],
       path: path || (propertyKey === 'index' ? '/' : `/${propertyKey}`),
@@ -96,7 +95,7 @@ export function getControllerOption(target: any): ControlleOption {
  */
 export function addToRouter(router: Router, target: any) {
   const mappingList = getControllerMapping(target.prototype);
-  if (mappingList) {
+  if (mappingList.length > 0) {
     const option = getControllerOption(target);
     const _router = new Router(option);
     if (option && option.middleware) {

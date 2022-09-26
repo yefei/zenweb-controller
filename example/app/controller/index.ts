@@ -47,4 +47,9 @@ export class Simpe {
   aaa() {
     this.ctx.body = 'aaa';
   }
+
+  @mapping({ method: 'ALL' })
+  all() {
+    this.ctx.body = 'any method';
+  }
 }

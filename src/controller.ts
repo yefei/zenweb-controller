@@ -102,11 +102,16 @@ export function addToRouter(router: Router, target: any) {
       _router.use(...(Array.isArray(option.middleware) ? option.middleware : [option.middleware]));
     }
     for (const item of mappingList) {
-      // <any>item.path 实际上路由参数支持数组形式，只是 ts 文件没有正确描述
-      _router.register(<any>item.path, item.methods, [...item.middleware, async ctx => {
+      const middlewares = [...item.middleware, async (ctx: Context) => {
         const controller = await ctx.injector.getInstance(target);
         await ctx.injector.apply(controller, item);
-      }]);
+      }];
+      if (item.methods.includes('ALL')) {
+        _router.all(item.path, ...middlewares);
+      } else {
+        // <any>item.path 实际上路由参数支持数组形式，只是 ts 文件没有正确描述
+        _router.register(<any>item.path, item.methods, middlewares);
+      }
     }
     router.use(_router.routes());
   }

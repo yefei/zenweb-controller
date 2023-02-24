@@ -1,4 +1,5 @@
-import { inject, Context } from '@zenweb/inject';
+import { Context } from '@zenweb/core';
+import { inject } from '@zenweb/inject';
 import { Router, RouterMethod, RouterPath } from '@zenweb/router';
 
 const MAPPING = Symbol('Controller#mapping');

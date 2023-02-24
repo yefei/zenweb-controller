@@ -1,5 +1,5 @@
-import { Next } from 'koa';
-import { Context, init, inject } from '@zenweb/inject';
+import { Context, Next } from '@zenweb/core';
+import { init, inject } from '@zenweb/inject';
 import { controller, mapping } from '../../../src';
 
 function actionLog(ctx: Context, next: Next) {

@@ -17,7 +17,7 @@ function loginRequired(ctx: Context, next: Next) {
   prefix: '/prefix',
   middleware: actionLog,
 })
-export class Simpe {
+export class Simple {
   // 自动注入
   @inject
   ctx: Context;

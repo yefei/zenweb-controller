@@ -120,7 +120,14 @@ export function addToRouter(router: Router, target: any) {
     for (const item of mappingList) {
       const middlewares = [...item.middleware, async (ctx: Context) => {
         const controller = await ctx.injector.getInstance(target);
-        await ctx.injector.apply(controller, item);
+        const result = await ctx.injector.apply(controller, item);
+        if (result !== undefined) {
+          if (typeof ctx.success === 'function') {
+            ctx.success(result);
+          } else {
+            ctx.body = result;
+          }
+        }
       }];
       if (item.methods.includes('ALL')) {
         _router.all(item.path, ...middlewares);

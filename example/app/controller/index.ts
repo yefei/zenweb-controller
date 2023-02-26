@@ -29,13 +29,13 @@ export class Simple {
 
   @mapping()
   index() {
-    this.ctx.body = 'index';
+    return 'index';
   }
 
   // 映射一个路径， 不指定参数默认为 `GET /方法名`
   @mapping()
-  simple(ctx: Context) {
-    ctx.body = 'simple';
+  simple() {
+    return 'simple';
   }
 
   // 每个方法都可以自定义中间件
@@ -45,11 +45,11 @@ export class Simple {
     middleware: loginRequired,
   })
   aaa() {
-    this.ctx.body = 'aaa';
+    return 'aaa';
   }
 
   @mapping({ method: 'ALL' })
   all() {
-    this.ctx.body = 'any method';
+    return 'any method';
   }
 }

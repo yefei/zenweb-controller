@@ -12,12 +12,7 @@ interface MappingItem {
 }
 
 export class Controller {
-  @inject
-  ctx?: Context;
-}
-
-export interface ControllerClass<T> {
-  new (): T;
+  @inject protected ctx: Context;
 }
 
 const mappingDecorator = makeMethodDecorator<MappingItem>();
@@ -115,20 +110,24 @@ export function addToRouter(router: Router, target: any) {
     const option = controllerDecorator.getValue(target);
     const _router = new Router(option);
     if (option && option.middleware) {
-      _router.use(...(Array.isArray(option.middleware) ? option.middleware : [option.middleware]));
+      const middlewares = (Array.isArray(option.middleware) ? option.middleware : [option.middleware]);
+      _router.use(...middlewares);
     }
     for (const item of mappingList) {
-      const middlewares = [...item.middleware, async (ctx: Context) => {
-        const controller = await ctx.injector.getInstance(target);
-        const result = await ctx.injector.apply(controller, item);
-        if (result !== undefined) {
-          if (typeof ctx.success === 'function') {
-            ctx.success(result);
-          } else {
-            ctx.body = result;
+      const middlewares = [
+        ...item.middleware,
+        async (ctx: Context) => {
+          const controller = await ctx.injector.getInstance(target);
+          const result = await ctx.injector.apply(controller, item);
+          if (result !== undefined) {
+            if (typeof ctx.success === 'function') {
+              ctx.success(result);
+            } else {
+              ctx.body = result;
+            }
           }
-        }
-      }];
+        },
+      ];
       if (item.methods.includes('ALL')) {
         _router.all(item.path, ...middlewares);
       } else {

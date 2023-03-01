@@ -1,14 +1,12 @@
-import { Context } from '@zenweb/core';
+import { Context, Middleware } from '@zenweb/core';
 import { inject } from '@zenweb/inject';
 import { Router, RouterMethod, RouterPath } from '@zenweb/router';
-import { makeClassDecorator, makeMethodDecorator } from 'decorator-make';
+import { makeClassDecorator, makeMethodDecorator, MethodDescriptor } from 'decorator-make';
 
-interface MappingItem {
+interface MappingItem extends MethodDescriptor {
   methods: RouterMethod[];
   path: RouterPath;
-  middleware: Router.Middleware[];
-  handle: (...args: any[]) => Promise<void> | void;
-  params: any[];
+  middleware: Middleware[];
 }
 
 export class Controller {
@@ -47,7 +45,7 @@ export function mapping({
 }: {
   method?: RouterMethod | RouterMethod[],
   path?: RouterPath,
-  middleware?: Router.Middleware | Router.Middleware[],
+  middleware?: Middleware | Middleware[],
 } = {}) {
   return mappingDecorator.wrap((descriptor, target, propertyKey) => {
     if (!path) {
@@ -71,7 +69,7 @@ export function mapping({
 }
 
 interface ControlleOption extends Router.RouterOptions {
-  middleware?: Router.Middleware | Router.Middleware[];
+  middleware?: Middleware | Middleware[];
 }
 
 const controllerDecorator = makeClassDecorator<ControlleOption>();

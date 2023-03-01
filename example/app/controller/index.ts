@@ -1,21 +1,25 @@
-import { Context, Next } from '@zenweb/core';
+import { Context, Middleware } from '@zenweb/core';
 import { init, inject } from '@zenweb/inject';
 import { controller, mapping } from '../../../src';
 
-function actionLog(ctx: Context, next: Next) {
-  console.log('actionLog middleware')
-  return next();
+function actionLog(): Middleware {
+  return function (ctx, next) {
+    console.log('actionLog middleware')
+    return next();
+  }
 }
 
-function loginRequired(ctx: Context, next: Next) {
-  console.log('loginRequired middleware')
-  return next();
+function loginRequired(): Middleware {
+  return function (ctx, next) {
+    console.log('loginRequired middleware')
+    return next();
+  }
 }
 
 // 控制器全局中间件
 @controller({
   prefix: '/prefix',
-  middleware: actionLog,
+  middleware: actionLog(),
 })
 export class Simple {
   // 自动注入
@@ -42,7 +46,7 @@ export class Simple {
   @mapping({
     method: ['POST', 'GET'],
     path: ['/aaa', '/bbb'],
-    middleware: loginRequired,
+    middleware: loginRequired(),
   })
   aaa() {
     return 'aaa';

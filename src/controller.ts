@@ -105,7 +105,7 @@ export function controller(opt: ControlleOption) {
 export function addToRouter(router: Router, target: any) {
   const mappingList = mappingDecorator.getMethods(target.prototype);
   if (mappingList.length > 0) {
-    scope('prototype')(target);
+    scope('prototype', false)(target);
     const option = controllerDecorator.getValue(target);
     const _router = new Router(option);
     if (option && option.middleware) {

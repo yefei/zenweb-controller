@@ -1,5 +1,5 @@
 import { Context, Middleware } from '@zenweb/core';
-import { init, inject } from '@zenweb/inject';
+import { init, inject, scope } from '@zenweb/inject';
 import { controller, mapping } from '../../../src';
 
 function actionLog(): Middleware {
@@ -55,5 +55,23 @@ export class Simple {
   @mapping({ method: 'ALL' })
   all() {
     return 'any method';
+  }
+}
+
+@scope('request')
+export class RequestController {
+  @mapping()
+  req() {
+    return 'req';
+  }
+}
+
+@scope('singleton')
+export class SingletonController {
+  i = 0;
+
+  @mapping()
+  counter() {
+    return this.i++;
   }
 }

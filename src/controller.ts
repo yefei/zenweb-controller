@@ -1,5 +1,5 @@
 import { Context, Middleware } from '@zenweb/core';
-import { inject } from '@zenweb/inject';
+import { inject, scope } from '@zenweb/inject';
 import { Router, RouterMethod, RouterPath } from '@zenweb/router';
 import { makeClassDecorator, makeMethodDecorator, MethodDescriptor } from 'decorator-make';
 
@@ -105,6 +105,7 @@ export function controller(opt: ControlleOption) {
 export function addToRouter(router: Router, target: any) {
   const mappingList = mappingDecorator.getMethods(target.prototype);
   if (mappingList.length > 0) {
+    scope('prototype')(target);
     const option = controllerDecorator.getValue(target);
     const _router = new Router(option);
     if (option && option.middleware) {

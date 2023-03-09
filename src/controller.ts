@@ -1,6 +1,7 @@
+/// <reference types="@zenweb/result" />
 import { Context, Middleware } from '@zenweb/core';
 import { inject, scope } from '@zenweb/inject';
-import { Router, RouterMethod, RouterPath } from '@zenweb/router';
+import { Router, RouterMethod, RouterOptions, RouterPath } from '@zenweb/router';
 import { makeClassDecorator, makeMethodDecorator, MethodDescriptor } from 'decorator-make';
 
 interface MappingItem extends MethodDescriptor {
@@ -68,7 +69,7 @@ export function mapping({
   });
 }
 
-interface ControlleOption extends Router.RouterOptions {
+interface ControlleOption extends RouterOptions {
   middleware?: Middleware | Middleware[];
 }
 

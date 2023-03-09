@@ -59,3 +59,11 @@ export class Controller2 {
   }
 }
 ```
+
+## Changelog
+
+### 3.9.0
+- 适配:
+  - @zenweb/core: ^3.5.0
+  - @zenweb/inject: ^3.18.0
+  - @zenweb/result: ^3.0.0

@@ -16,8 +16,8 @@ export default function setup(option?: ControllerOption): SetupFunction {
   option = Object.assign({}, defaultRouterOption, option);
   return async function controller(setup) {
     setup.debug('option: %o', option);
-    setup.checkCoreProperty('router', '@zenweb/router');
-    setup.checkCoreProperty('injector', '@zenweb/inject');
+    setup.assertModuleExists('router');
+    setup.assertModuleExists('inject');
     setup.defineCoreProperty('controller', { value: true });
     if (option.discoverPaths && option.discoverPaths.length) {
       for (const p of option.discoverPaths) {

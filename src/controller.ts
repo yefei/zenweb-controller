@@ -11,7 +11,7 @@ interface MappingItem extends MethodDescriptor {
 }
 
 export class Controller {
-  @inject protected ctx: Context;
+  @inject protected ctx!: Context;
 }
 
 const mappingDecorator = makeMethodDecorator<MappingItem>();

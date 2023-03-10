@@ -23,8 +23,7 @@ function loginRequired(): Middleware {
 })
 export class Simple {
   // 自动注入
-  @inject
-  ctx: Context;
+  @inject ctx!: Context;
 
   @init // 控制器每次被请求时候都会执行
   init(ctx: Context) {

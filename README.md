@@ -62,6 +62,9 @@ export class Controller2 {
 
 ## Changelog
 
+### 3.9.1
+- null 检查
+
 ### 3.9.0
 - 适配:
   - @zenweb/core: ^3.5.0

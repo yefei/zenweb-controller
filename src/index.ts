@@ -12,8 +12,8 @@ const defaultRouterOption: ControllerOption = {
   discoverPaths: [path.join(process.cwd(), 'app', 'controller')],
 };
 
-export default function setup(option?: ControllerOption): SetupFunction {
-  option = Object.assign({}, defaultRouterOption, option);
+export default function setup(opt?: ControllerOption): SetupFunction {
+  const option = Object.assign({}, defaultRouterOption, opt);
   return async function controller(setup) {
     setup.debug('option: %o', option);
     setup.assertModuleExists('router');

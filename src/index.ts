@@ -9,7 +9,7 @@ export interface ControllerOption {
 }
 
 const defaultRouterOption: ControllerOption = {
-  discoverPaths: [path.join(process.cwd(), 'app', 'controller')],
+  discoverPaths: ['./app/controller'],
 };
 
 export default function setup(opt?: ControllerOption): SetupFunction {
@@ -18,14 +18,18 @@ export default function setup(opt?: ControllerOption): SetupFunction {
     setup.debug('option: %o', option);
     setup.assertModuleExists('router');
     setup.assertModuleExists('inject');
-    setup.defineCoreProperty('controller', { value: true });
     if (option.discoverPaths && option.discoverPaths.length) {
-      for (const p of option.discoverPaths) {
+      for (let p of option.discoverPaths) {
+        if (p.startsWith('./')) {
+          p = path.join(process.cwd(), p.slice(2));
+        }
         for (const file of await globby('**/*.{js,ts}', { cwd: p, absolute: true })) {
+          setup.debug('load:', file);
           const mod = require(file.slice(0, -3));
           for (const i of Object.values(mod)) {
             if (typeof i === 'function') {
-              addToRouter(setup.core.router, i);
+              setup.debug('class: %o', i);
+              addToRouter(setup, i);
             }
           }
         }

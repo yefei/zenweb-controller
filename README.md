@@ -10,22 +10,22 @@ import { Context, mapping } from 'zenweb';
 export class Controller {
   @mapping()
   index(ctx: Context) { // 如果函数名称为 index 则路径名称为 /，否则路径名称默认为函数名称
-    ctx.body = 'Hello zenweb';
+    return 'Hello zenweb';
   }
 
   @mapping() // 不指定 path 参数则默认使用函数名称 /path2
   path2(ctx: Context) {
-    ctx.body = 'Hello path2';
+    return 'Hello path2';
   }
 
   @mapping({ path: '/p3' }) // 指定 path 值为 /p3
   path3(ctx: Context) {
-    ctx.body = 'Hello path3';
+    return 'Hello path3';
   }
 
   @mapping({ method: 'POST' }) // 指定请求方法
   post(ctx: Context) {
-    ctx.body = 'Hello post';
+    return 'Hello post';
   }
 }
 ```
@@ -44,7 +44,7 @@ export class Controller {
   // 方法上的中间件
   @mapping({ middleware: actionLog })
   simple(ctx: Context) {
-    ctx.body = 'simple';
+    return 'simple';
   }
 }
 
@@ -55,18 +55,7 @@ export class Controller {
 export class Controller2 {
   @mapping()
   simple(ctx: Context) {
-    ctx.body = 'simple';
+    return 'simple';
   }
 }
 ```
-
-## Changelog
-
-### 3.9.1
-- null 检查
-
-### 3.9.0
-- 适配:
-  - @zenweb/core: ^3.5.0
-  - @zenweb/inject: ^3.18.0
-  - @zenweb/result: ^3.0.0

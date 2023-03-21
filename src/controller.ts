@@ -1,5 +1,5 @@
 /// <reference types="@zenweb/result" />
-import { Context, Middleware } from '@zenweb/core';
+import { Context, Middleware, SetupHelper } from '@zenweb/core';
 import { inject, scope } from '@zenweb/inject';
 import { Router, RouterMethod, RouterOptions, RouterPath } from '@zenweb/router';
 import { makeClassDecorator, makeMethodDecorator, MethodDescriptor } from 'decorator-make';
@@ -100,20 +100,22 @@ export function controller(opt: ControlleOption) {
 
 /**
  * 将控制器中的路由配置添加到指定路由中
- * @param router 路由实例
+ * @param setup 安装助手
  * @param target 控制器
  */
-export function addToRouter(router: Router, target: any) {
+export function addToRouter(setup: SetupHelper, target: any) {
   const mappingList = mappingDecorator.getMethods(target.prototype);
   if (mappingList.length > 0) {
     scope('prototype', false)(target);
     const option = controllerDecorator.getValue(target);
+    setup.debug('controller option: %o', option);
     const _router = new Router(option);
     if (option && option.middleware) {
       const middlewares = (Array.isArray(option.middleware) ? option.middleware : [option.middleware]);
       _router.use(...middlewares);
     }
     for (const item of mappingList) {
+      setup.debug('controller mapping: %o', item);
       const middlewares = [
         ...item.middleware,
         async (ctx: Context) => {
@@ -135,6 +137,8 @@ export function addToRouter(router: Router, target: any) {
         _router.register(<any>item.path, item.methods, middlewares);
       }
     }
-    router.use(_router.routes());
+    setup.core.router.use(_router.routes());
+  } else {
+    setup.debug('ignore no mapping: %o', target);
   }
 }

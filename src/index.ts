@@ -32,7 +32,7 @@ export default function setup(opt?: ControllerOption): SetupFunction {
           const mod = require(file.slice(0, -3));
           for (const i of Object.values(mod)) {
             if (typeof i === 'function') {
-              controllerRegister.register(i);
+              controllerRegister.registerByClass(i);
             }
           }
         }

@@ -148,6 +148,28 @@ export function addToRouter(setup: SetupHelper, target: any) {
   return false;
 }
 
+export interface ControllerItem {
+  /**
+   * 控制器类
+   */
+  target: Function;
+
+  /**
+   * 控制器选项
+   */
+  option?: ControlleOption;
+
+  /**
+   * 控制器中间件
+   */
+  middlewares?: Middleware[];
+
+  /**
+   * 控制器路由映射列表
+   */
+  mappingList: MappingItem[];
+}
+
 /**
  * 控制器注册器
  */
@@ -155,9 +177,18 @@ export class ControllerRegister {
   /**
    * 已注册的控制器类
    */
-  private controllers: Function[] = [];
+  public controllers: ControllerItem[] = [];
 
-  constructor(private setup: SetupHelper) {}
+  constructor(private setup: SetupHelper) {
+  }
+
+  /**
+   * 注册控制器
+   */
+  register(controller: ControllerItem) {
+    this.controllers.push(controller);
+    return this;
+  }
 
   /**
    * 注册控制器
@@ -166,12 +197,30 @@ export class ControllerRegister {
    *  - true 注册成功
    *  - false 无效控制器
    */
-  register(target: Function) {
+  registerByClass(target: Function) {
     this.setup.debug('class: %o', target);
-    if (addToRouter(this.setup, target)) {
-      this.controllers.push(target);
+    const mappingList = mappingDecorator.getMethods(target.prototype);
+    if (mappingList.length > 0) {
+      scope('prototype', false)(target);
+      const option = controllerDecorator.getValue(target);
+      this.setup.debug('@controller(%o)', option);
+      const controllerItem: ControllerItem = {
+        target,
+        option,
+        mappingList,
+      };
+      if (option && option.middleware) {
+        controllerItem.middlewares = (Array.isArray(option.middleware) ? option.middleware : [option.middleware]);
+      }
+      this.register(controllerItem);
       return true;
+    } else {
+      this.setup.debug('ignore no mapping: %o', target);
     }
     return false;
+  }
+
+  addToRouter() {
+    const _router = new Router(option);
   }
 }

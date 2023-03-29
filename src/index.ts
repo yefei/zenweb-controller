@@ -1,25 +1,22 @@
 import path = require('path');
 import globby = require('globby');
 import { SetupFunction } from '@zenweb/core';
-import { ControllerRegister } from './controller';
-export { Controller, controller, mapping } from './controller';
+import { ControllerClass, ControllerSetupOption } from './types';
+import { ControllerRegister } from './register';
+import { debug } from './utils';
+export { controller, mapping } from './controller';
+export * from './types';
 
-export interface ControllerOption {
-  discoverPaths?: string[];
-}
-
-const defaultRouterOption: ControllerOption = {
-  discoverPaths: ['./app/controller'],
-};
-
-export default function setup(opt?: ControllerOption): SetupFunction {
-  const option = Object.assign({}, defaultRouterOption, opt);
+export default function setup(opt?: ControllerSetupOption): SetupFunction {
+  const option = Object.assign({
+    discoverPaths: ['./app/controller'],
+  }, opt);
   return async function controller(setup) {
-    setup.debug('option: %o', option);
+    debug('option: %o', option);
     setup.assertModuleExists('router');
     setup.assertModuleExists('inject');
 
-    const controllerRegister = new ControllerRegister(setup);
+    const controllerRegister = new ControllerRegister();
     setup.defineCoreProperty('controllerRegister', { value: controllerRegister });
 
     if (option.discoverPaths && option.discoverPaths.length) {
@@ -28,16 +25,20 @@ export default function setup(opt?: ControllerOption): SetupFunction {
           p = path.join(process.cwd(), p.slice(2));
         }
         for (const file of await globby('**/*.{js,ts}', { cwd: p, absolute: true })) {
-          setup.debug('load:', file);
+          debug('load:', file);
           const mod = require(file.slice(0, -3));
           for (const i of Object.values(mod)) {
             if (typeof i === 'function') {
-              controllerRegister.registerByClass(i);
+              controllerRegister.registerClass(<ControllerClass> i);
             }
           }
         }
       }
     }
+
+    setup.after(() => {
+      controllerRegister.addToRouter(setup.core.router);
+    });
   }
 }
 

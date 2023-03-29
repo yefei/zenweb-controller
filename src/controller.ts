@@ -1,20 +1,14 @@
-/// <reference types="@zenweb/result" />
-import { Context, Middleware, SetupHelper } from '@zenweb/core';
-import { inject, scope } from '@zenweb/inject';
-import { Router, RouterMethod, RouterOptions, RouterPath } from '@zenweb/router';
-import { makeClassDecorator, makeMethodDecorator, MethodDescriptor } from 'decorator-make';
-
-interface MappingItem extends MethodDescriptor {
-  methods: RouterMethod[];
-  path: RouterPath;
-  middleware: Middleware[];
-}
+import { Context, Middleware } from '@zenweb/core';
+import { inject } from '@zenweb/inject';
+import { RouterMethod, RouterPath } from '@zenweb/router';
+import { makeClassDecorator, makeMethodDecorator } from 'decorator-make';
+import { ControllerOption, MappingItem } from './types';
 
 export class Controller {
   @inject protected ctx!: Context;
 }
 
-const mappingDecorator = makeMethodDecorator<MappingItem>();
+export const mappingDecorator = makeMethodDecorator<MappingItem>();
 
 /**
  * 路由映射
@@ -69,11 +63,7 @@ export function mapping({
   });
 }
 
-interface ControlleOption extends RouterOptions {
-  middleware?: Middleware | Middleware[];
-}
-
-const controllerDecorator = makeClassDecorator<ControlleOption>();
+export const controllerDecorator = makeClassDecorator<ControllerOption>();
 
 /**
  * 控制器选项
@@ -92,135 +82,8 @@ const controllerDecorator = makeClassDecorator<ControlleOption>();
  * controller(opt?)(Target);
  * ```
  */
-export function controller(opt: ControlleOption) {
+export function controller(opt: ControllerOption) {
   return controllerDecorator.wrap(() => {
     return opt;
   });
-}
-
-/**
- * 将控制器中的路由配置添加到指定路由中
- * @param setup 安装助手
- * @param target 控制器
- * @returns
- *  - true: 完成设置路由
- *  - false: 没有找到有效的 mapping 方法
- */
-export function addToRouter(setup: SetupHelper, target: any) {
-  const mappingList = mappingDecorator.getMethods(target.prototype);
-  if (mappingList.length > 0) {
-    scope('prototype', false)(target);
-    const option = controllerDecorator.getValue(target);
-    setup.debug('@controller(%o)', option);
-    const _router = new Router(option);
-    if (option && option.middleware) {
-      const middlewares = (Array.isArray(option.middleware) ? option.middleware : [option.middleware]);
-      _router.use(...middlewares);
-    }
-    for (const item of mappingList) {
-      setup.debug('@mapping(%o)', item);
-      const middlewares = [
-        ...item.middleware,
-        async (ctx: Context) => {
-          const controller = await ctx.injector.getInstance(target);
-          const result = await ctx.injector.apply(controller, item);
-          if (result !== undefined) {
-            if (typeof ctx.success === 'function') {
-              ctx.success(result);
-            } else {
-              ctx.body = result;
-            }
-          }
-        },
-      ];
-      if (item.methods.includes('ALL')) {
-        _router.all(item.path, ...middlewares);
-      } else {
-        // <any>item.path 实际上路由参数支持数组形式，只是 ts 文件没有正确描述
-        _router.register(<any>item.path, item.methods, middlewares);
-      }
-    }
-    setup.core.router.use(_router.routes());
-    return true;
-  } else {
-    setup.debug('ignore no mapping: %o', target);
-  }
-  return false;
-}
-
-export interface ControllerItem {
-  /**
-   * 控制器类
-   */
-  target: Function;
-
-  /**
-   * 控制器选项
-   */
-  option?: ControlleOption;
-
-  /**
-   * 控制器中间件
-   */
-  middlewares?: Middleware[];
-
-  /**
-   * 控制器路由映射列表
-   */
-  mappingList: MappingItem[];
-}
-
-/**
- * 控制器注册器
- */
-export class ControllerRegister {
-  /**
-   * 已注册的控制器类
-   */
-  public controllers: ControllerItem[] = [];
-
-  constructor(private setup: SetupHelper) {
-  }
-
-  /**
-   * 注册控制器
-   */
-  register(controller: ControllerItem) {
-    this.controllers.push(controller);
-    return this;
-  }
-
-  /**
-   * 注册控制器
-   * @param target 控制器类
-   * @returns
-   *  - true 注册成功
-   *  - false 无效控制器
-   */
-  registerByClass(target: Function) {
-    this.setup.debug('class: %o', target);
-    const mappingList = mappingDecorator.getMethods(target.prototype);
-    if (mappingList.length > 0) {
-      scope('prototype', false)(target);
-      const option = controllerDecorator.getValue(target);
-      this.setup.debug('@controller(%o)', option);
-      const controllerItem: ControllerItem = {
-        target,
-        option,
-        mappingList,
-      };
-      if (option && option.middleware) {
-        controllerItem.middlewares = (Array.isArray(option.middleware) ? option.middleware : [option.middleware]);
-      }
-      this.register(controllerItem);
-      return true;
-    } else {
-      this.setup.debug('ignore no mapping: %o', target);
-    }
-    return false;
-  }
-
-  addToRouter() {
-    const _router = new Router(option);
-  }
 }

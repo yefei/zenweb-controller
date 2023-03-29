@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.12.0
+- 完善 Core.controllerRegister
+
 ## 3.11.0
 - 新增 Core.controllerRegister
 

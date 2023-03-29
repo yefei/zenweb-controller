@@ -102,20 +102,23 @@ export function controller(opt: ControlleOption) {
  * 将控制器中的路由配置添加到指定路由中
  * @param setup 安装助手
  * @param target 控制器
+ * @returns
+ *  - true: 完成设置路由
+ *  - false: 没有找到有效的 mapping 方法
  */
 export function addToRouter(setup: SetupHelper, target: any) {
   const mappingList = mappingDecorator.getMethods(target.prototype);
   if (mappingList.length > 0) {
     scope('prototype', false)(target);
     const option = controllerDecorator.getValue(target);
-    setup.debug('controller option: %o', option);
+    setup.debug('@controller(%o)', option);
     const _router = new Router(option);
     if (option && option.middleware) {
       const middlewares = (Array.isArray(option.middleware) ? option.middleware : [option.middleware]);
       _router.use(...middlewares);
     }
     for (const item of mappingList) {
-      setup.debug('controller mapping: %o', item);
+      setup.debug('@mapping(%o)', item);
       const middlewares = [
         ...item.middleware,
         async (ctx: Context) => {
@@ -138,7 +141,37 @@ export function addToRouter(setup: SetupHelper, target: any) {
       }
     }
     setup.core.router.use(_router.routes());
+    return true;
   } else {
     setup.debug('ignore no mapping: %o', target);
+  }
+  return false;
+}
+
+/**
+ * 控制器注册器
+ */
+export class ControllerRegister {
+  /**
+   * 已注册的控制器类
+   */
+  private controllers: Function[] = [];
+
+  constructor(private setup: SetupHelper) {}
+
+  /**
+   * 注册控制器
+   * @param target 控制器类
+   * @returns
+   *  - true 注册成功
+   *  - false 无效控制器
+   */
+  register(target: Function) {
+    this.setup.debug('class: %o', target);
+    if (addToRouter(this.setup, target)) {
+      this.controllers.push(target);
+      return true;
+    }
+    return false;
   }
 }

@@ -1,7 +1,7 @@
 import path = require('path');
 import globby = require('globby');
 import { SetupFunction } from '@zenweb/core';
-import { addToRouter } from './controller';
+import { ControllerRegister } from './controller';
 export { Controller, controller, mapping } from './controller';
 
 export interface ControllerOption {
@@ -18,6 +18,10 @@ export default function setup(opt?: ControllerOption): SetupFunction {
     setup.debug('option: %o', option);
     setup.assertModuleExists('router');
     setup.assertModuleExists('inject');
+
+    const controllerRegister = new ControllerRegister(setup);
+    setup.defineCoreProperty('controllerRegister', { value: controllerRegister });
+
     if (option.discoverPaths && option.discoverPaths.length) {
       for (let p of option.discoverPaths) {
         if (p.startsWith('./')) {
@@ -28,12 +32,20 @@ export default function setup(opt?: ControllerOption): SetupFunction {
           const mod = require(file.slice(0, -3));
           for (const i of Object.values(mod)) {
             if (typeof i === 'function') {
-              setup.debug('class: %o', i);
-              addToRouter(setup, i);
+              controllerRegister.register(i);
             }
           }
         }
       }
     }
+  }
+}
+
+declare module '@zenweb/core' {
+  interface Core {
+    /**
+     * 控制器注册器
+     */
+    controllerRegister: ControllerRegister;
   }
 }

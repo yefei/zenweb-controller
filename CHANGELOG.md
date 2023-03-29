@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.11.0
+- 新增 Core.controllerRegister
+
 ## 3.10.0
 - discoverPaths 支持使用 "./" 开头的相对路径
 - 增加 debug 信息

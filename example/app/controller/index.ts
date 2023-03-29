@@ -37,7 +37,9 @@ export class Simple {
 
   // 映射一个路径， 不指定参数默认为 `GET /方法名`
   @mapping()
+  @mapping({ path: '/s2' })
   simple() {
+    console.log('simple')
     return 'simple';
   }
 

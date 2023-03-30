@@ -16,8 +16,7 @@ export default function setup(opt?: ControllerSetupOption): SetupFunction {
     setup.assertModuleExists('router');
     setup.assertModuleExists('inject');
 
-    const controllerRegister = new ControllerRegister();
-    setup.defineCoreProperty('controllerRegister', { value: controllerRegister });
+    const controllerRegister = await setup.core.injector.getInstance(ControllerRegister);
 
     if (option.discoverPaths && option.discoverPaths.length) {
       for (let p of option.discoverPaths) {
@@ -39,14 +38,5 @@ export default function setup(opt?: ControllerSetupOption): SetupFunction {
     setup.after(() => {
       controllerRegister.addToRouter(setup.core.router);
     });
-  }
-}
-
-declare module '@zenweb/core' {
-  interface Core {
-    /**
-     * 控制器注册器
-     */
-    controllerRegister: ControllerRegister;
   }
 }

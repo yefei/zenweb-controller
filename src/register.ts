@@ -1,4 +1,3 @@
-/// <reference types="@zenweb/result" />
 import { Context } from '@zenweb/core';
 import { scope } from '@zenweb/inject';
 import { Router } from '@zenweb/router';
@@ -21,14 +20,7 @@ export function getControllerRouter({ option, middlewares, mappingList, target }
       ...item.middleware,
       async (ctx: Context) => {
         const controller = await ctx.injector.getInstance(target);
-        const result = await ctx.injector.apply(controller, item);
-        if (result !== undefined) {
-          if (typeof ctx.success === 'function') {
-            ctx.success(result);
-          } else {
-            ctx.body = result;
-          }
-        }
+        return await ctx.injector.apply(controller, item);
       },
     ];
     if (item.methods.includes('ALL')) {
@@ -44,6 +36,7 @@ export function getControllerRouter({ option, middlewares, mappingList, target }
 /**
  * 控制器注册器
  */
+@scope('singleton')
 export class ControllerRegister {
   /**
    * 已注册的控制器类

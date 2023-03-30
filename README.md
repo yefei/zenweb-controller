@@ -30,6 +30,10 @@ export class Controller {
 }
 ```
 
+:::tip 注意
+控制器方法中 `return` 数据需要安装 `@zenweb/result@^3.2.1` 模块，否则需要设置 `ctx.body` 输出数据
+:::
+
 ### 使用中间件
 ```ts
 import { Context, Next, mapping, controller } from 'zenweb';

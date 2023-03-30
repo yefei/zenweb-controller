@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.13.0
+- 不再主动调用 ctx.success 方法
+- 删除 Core.controllerRegister 改为使用注入依赖初始化
+
 ## 3.12.0
 - 完善 Core.controllerRegister
 

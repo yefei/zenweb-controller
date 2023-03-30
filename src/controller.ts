@@ -1,12 +1,7 @@
-import { Context, Middleware } from '@zenweb/core';
-import { inject } from '@zenweb/inject';
+import { Middleware } from '@zenweb/core';
 import { RouterMethod, RouterPath } from '@zenweb/router';
 import { makeClassDecorator, makeMethodDecorator } from 'decorator-make';
 import { ControllerOption, MappingItem } from './types';
-
-export class Controller {
-  @inject protected ctx!: Context;
-}
 
 export const mappingDecorator = makeMethodDecorator<MappingItem>();
 

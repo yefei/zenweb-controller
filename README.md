@@ -31,7 +31,7 @@ export class Controller {
 ```
 
 :::tip 注意
-控制器方法中 `return` 数据需要安装 `@zenweb/result@^3.2.1` 模块，否则需要设置 `ctx.body` 输出数据
+控制器方法中 `return` 数据如果需要统一处理需要安装 `@zenweb/result@^3.5.0` 模块，否则 `return` 数据会被设置到 `ctx.body` 上
 :::
 
 ### 使用中间件
@@ -47,7 +47,7 @@ function actionLog(ctx: Context, next: Next) {
 export class Controller {
   // 方法上的中间件
   @mapping({ middleware: actionLog })
-  simple(ctx: Context) {
+  simple() {
     return 'simple';
   }
 }
@@ -58,7 +58,7 @@ export class Controller {
 })
 export class Controller2 {
   @mapping()
-  simple(ctx: Context) {
+  simple() {
     return 'simple';
   }
 }

@@ -1,3 +1,4 @@
+/// <reference types="@zenweb/result" />
 import { Context } from '@zenweb/core';
 import { scope } from '@zenweb/inject';
 import { Router } from '@zenweb/router';
@@ -20,7 +21,14 @@ export function getControllerRouter({ option, middlewares, mappingList, target }
       ...item.middleware,
       async (ctx: Context) => {
         const controller = await ctx.injector.getInstance(target);
-        return await ctx.injector.apply(controller, item);
+        const data = await ctx.injector.apply(controller, item);
+        if (typeof data !== 'undefined') {
+          if (ctx.success) {
+            await ctx.success(data);
+          } else {
+            ctx.body = data;
+          }
+        }
       },
     ];
     if (item.methods.includes('ALL')) {

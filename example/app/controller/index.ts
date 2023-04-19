@@ -3,9 +3,12 @@ import { init, inject, scope } from '@zenweb/inject';
 import { controller, mapping } from '../../../src';
 
 function actionLog(): Middleware {
-  return function (ctx, next) {
+  return async function (ctx, next) {
+    await next();
     console.log('actionLog middleware')
-    return next();
+    console.log('status:', ctx.status);
+    console.log('success:', ctx.success);
+    console.log('body:', ctx.body);
   }
 }
 
@@ -32,6 +35,7 @@ export class Simple {
 
   @mapping()
   index() {
+    console.log('index')
     return 'index';
   }
 

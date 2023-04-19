@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.14.0
+- 主动调用 ctx.success 方法并等待处理，解决中间件无法取得返回结果问题
+
 ## 3.13.0
 - 不再主动调用 ctx.success 方法
 - 删除 Core.controllerRegister 改为使用注入依赖初始化

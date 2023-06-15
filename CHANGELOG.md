@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.15.0
+- 导出 mappingDecorator, controllerDecorator
+- 统一方法 discoverControllerClass
+
 ## 3.14.0
 - 主动调用 ctx.success 方法并等待处理，解决中间件无法取得返回结果问题
 

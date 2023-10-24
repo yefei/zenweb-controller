@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.16.0
+- 新增 patterns 选项
+
 ## 3.15.0
 - 导出 mappingDecorator, controllerDecorator
 - 统一方法 discoverControllerClass

@@ -22,7 +22,7 @@ export default function setup(opt?: ControllerSetupOption): SetupFunction {
 
     if (option.discoverPaths && option.discoverPaths.length) {
       for (let p of option.discoverPaths) {
-        for await (const r of discoverControllerClass(p)) {
+        for await (const r of discoverControllerClass(p, option.patterns)) {
           controllerRegister.registerClass(r.class);
         }
       }

@@ -55,5 +55,14 @@ export interface ControllerItem {
  * 控制器安装选项
  */
 export interface ControllerSetupOption {
+  /**
+   * 发现目录
+   */
   discoverPaths?: string[];
+
+  /**
+   * 文件匹配规则
+   * @default '**\/*.{js,ts}'
+   */
+  patterns?: string | string[];
 }

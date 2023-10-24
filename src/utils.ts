@@ -5,11 +5,11 @@ import { ControllerClass } from './types';
 
 export const debug = Debugger('zenweb:controller');
 
-export async function *discoverControllerClass(dir: string) {
+export async function *discoverControllerClass(dir: string, patterns?: string | readonly string[]) {
   if (dir.startsWith('./')) {
     dir = path.join(process.cwd(), dir.slice(2));
   }
-  for (const file of await globby('**/*.{js,ts}', { cwd: dir, absolute: true })) {
+  for (const file of await globby(patterns || '**/*.{js,ts}', { cwd: dir, absolute: true })) {
     debug('load:', file);
     const mod = require(file.slice(0, -3));
     for (const i of Object.values(mod)) {

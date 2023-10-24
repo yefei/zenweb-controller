@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.16.1
+- patterns 匹配 jsx,tsx
+
 ## 3.16.0
 - 新增 patterns 选项
 

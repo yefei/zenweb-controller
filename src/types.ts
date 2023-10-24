@@ -62,7 +62,7 @@ export interface ControllerSetupOption {
 
   /**
    * 文件匹配规则
-   * @default '**\/*.{js,ts}'
+   * @default '**\/*.{js,ts,jsx,tsx}'
    */
   patterns?: string | string[];
 }

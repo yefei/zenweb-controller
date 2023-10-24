@@ -9,16 +9,13 @@ export async function *discoverControllerClass(dir: string, patterns?: string | 
   if (dir.startsWith('./')) {
     dir = path.join(process.cwd(), dir.slice(2));
   }
-  for (const file of await globby(patterns || '**/*.{js,ts}', { cwd: dir, absolute: true })) {
+  for (const file of await globby(patterns || '**/*.{js,ts,jsx,tsx}', { cwd: dir, absolute: true })) {
     debug('load:', file);
-    const mod = require(file.slice(0, -3));
+    const lastDot = Math.max(0, file.lastIndexOf('.'));
+    const mod = require(lastDot ? file.slice(0, lastDot) : file);
     for (const i of Object.values(mod)) {
       if (typeof i === 'function') {
-        yield {
-          class: <ControllerClass> i,
-          file,
-          name: file.slice(dir.length + 1, file.length - 3),
-        };
+        yield <ControllerClass> i;
       }
     }
   }

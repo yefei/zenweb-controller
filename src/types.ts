@@ -1,7 +1,7 @@
-import { RouterOptions } from '@koa/router';
-import { Middleware } from '@zenweb/core';
-import { RouterMethod, RouterPath } from '@zenweb/router';
-import { MethodDescriptor } from 'decorator-make';
+import type { RouterOptions } from '@zenweb/router';
+import type { Middleware } from '@zenweb/core';
+import type { RouterMethod, RouterPath } from '@zenweb/router';
+import type { MethodDescriptor } from 'decorator-make';
 
 /**
  * 控制器类描述

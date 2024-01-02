@@ -1,5 +1,8 @@
 # Changelog
 
+## [3.16.2] - 2024-1-2
+- peerDependencies
+
 ## 3.16.1
 - patterns 匹配 jsx,tsx
 

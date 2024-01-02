@@ -1,9 +1,9 @@
 /// <reference types="@zenweb/result" />
-import { Context } from '@zenweb/core';
+import type { Context } from '@zenweb/core';
 import { scope } from '@zenweb/inject';
 import { Router } from '@zenweb/router';
 import { controllerDecorator, mappingDecorator } from './controller';
-import { ControllerClass, ControllerItem } from './types';
+import type { ControllerClass, ControllerItem } from './types';
 import { debug } from './utils';
 
 /**

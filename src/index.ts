@@ -1,5 +1,5 @@
-import { SetupFunction } from '@zenweb/core';
-import { ControllerSetupOption } from './types';
+import type { SetupFunction } from '@zenweb/core';
+import type { ControllerSetupOption } from './types';
 import { ControllerRegister } from './register';
 import { debug, discoverControllerClass } from './utils';
 export * from './controller';

@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as globby from 'globby';
 import Debugger from 'debug';
-import { ControllerClass } from './types';
+import type { ControllerClass } from './types';
 
 export const debug = Debugger('zenweb:controller');
 

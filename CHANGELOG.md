@@ -1,5 +1,8 @@
 # Changelog
 
+## [3.16.3] - 2024-1-3
+- 去除 peerDependencies
+
 ## [3.16.2] - 2024-1-2
 - peerDependencies
 

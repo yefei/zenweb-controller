@@ -1,6 +1,6 @@
 {
   "name": "@zenweb/controller",
-  "version": "3.16.4",
+  "version": "3.16.5",
   "description": "Zenweb Controller module",
   "exports": "./lib/index.js",
   "typings": "./lib/index.d.ts",

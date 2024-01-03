@@ -1,5 +1,5 @@
-import type { Middleware } from '@zenweb/core';
-import type { RouterMethod, RouterPath } from '@zenweb/router';
+import { Middleware } from '@zenweb/core';
+import { RouterMethod, RouterPath } from '@zenweb/router';
 import { makeClassDecorator, makeMethodDecorator } from 'decorator-make';
 import { ControllerOption, MappingItem } from './types';
 

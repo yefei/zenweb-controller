@@ -1,9 +1,9 @@
 import * as path from 'path';
 import * as globby from 'globby';
-import { debug as _debug } from '@zenweb/core';
+import { Debugger, debug as _debug } from '@zenweb/core';
 import { ControllerClass } from './types';
 
-export const debug = _debug.extend('controller');
+export const debug: Debugger = _debug.extend('controller');
 
 export async function *discoverControllerClass(dir: string, patterns?: string | readonly string[]) {
   if (dir.startsWith('./')) {

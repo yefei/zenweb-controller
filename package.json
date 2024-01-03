@@ -38,7 +38,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@zenweb/core": ">=3.5.5",
+    "@zenweb/core": "^4.2.1",
     "@zenweb/inject": ">=3.19.0",
     "@zenweb/result": "^3.12.5",
     "@zenweb/router": ">=3.3.1",

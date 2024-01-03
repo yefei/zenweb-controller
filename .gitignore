@@ -13,3 +13,6 @@ run/
 .npmrc
 lib/
 pnpm-lock.yaml
+.vscode/
+.yarn/
+.pnp.*

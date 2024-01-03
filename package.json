@@ -1,7 +1,7 @@
 {
   "name": "@zenweb/controller",
   "packageManager": "yarn@4.0.2",
-  "version": "3.16.7",
+  "version": "3.16.8",
   "description": "Zenweb Controller module",
   "exports": "./lib/index.js",
   "typings": "./lib/index.d.ts",

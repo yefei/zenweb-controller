@@ -28,6 +28,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.10.6",
     "@types/react": "^18.2.31",
     "@zenweb/messagecode": "^3.4.0",
     "cross-env": "^7.0.3",

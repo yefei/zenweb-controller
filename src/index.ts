@@ -1,3 +1,4 @@
+import { sep } from 'path';
 import { SetupFunction } from '@zenweb/core';
 import { ControllerSetupOption } from './types';
 import { ControllerRegister } from './register';
@@ -22,8 +23,11 @@ export default function setup(opt?: ControllerSetupOption): SetupFunction {
 
     if (option.discoverPaths && option.discoverPaths.length) {
       for (let p of option.discoverPaths) {
-        for await (const r of discoverControllerClass(p, option.patterns)) {
-          controllerRegister.registerClass(r);
+        for await (const i of discoverControllerClass(p, option.patterns)) {
+          controllerRegister.registerClass(
+            i.class,
+            option.autoControllerPrefix ? i.filename.split(sep).filter(i => i !== 'index').join('/') : undefined,
+          );
         }
       }
     }

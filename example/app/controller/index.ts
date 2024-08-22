@@ -71,6 +71,7 @@ export class RequestController {
   }
 }
 
+@controller({ prefix: '/singleton' })
 @scope('singleton')
 export class SingletonController {
   i = 0;

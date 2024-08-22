@@ -38,12 +38,7 @@ export interface ControllerItem {
   /**
    * 控制器选项
    */
-  option?: ControllerOption;
-
-  /**
-   * 控制器中间件
-   */
-  middlewares?: Middleware[];
+  option: ControllerOption;
 
   /**
    * 控制器路由映射列表
@@ -65,4 +60,13 @@ export interface ControllerSetupOption {
    * @default '**\/*.{js,ts,jsx,tsx}'
    */
   patterns?: string | string[];
+
+  /**
+   * 是否自动添加控制器前缀
+   * - 自动前缀是根据路径名自动生成的
+   * - 如果文件名使用 index 则自动忽略
+   * - 如果 \@controller({ prefix: '/somepath' }) 前缀为 '/' 也会忽略
+   * @default false
+   */
+  autoControllerPrefix?: boolean;
 }

@@ -10,5 +10,7 @@ app.setup(modInject());
 app.setup(modRouter());
 app.setup(messagecode());
 app.setup(modResult());
-app.setup(modController());
+app.setup(modController({
+  autoControllerPrefix: true,
+}));
 app.start();

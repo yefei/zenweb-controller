@@ -12,6 +12,7 @@ export const mappingDecorator = makeMethodDecorator<MappingItem>();
  * @param arg0.method HTTP 方法，默认 GET
  * @param arg0.path 路径，默认 /{方法名}
  * @param arg0.middleware 中间件
+ * @param arg0.prefix 路径前缀，只有 `path` 为 `string` 才有效，正则则忽略
  * 
  * #### 在 TypeScript 中使用
  * ```ts
@@ -31,10 +32,12 @@ export const mappingDecorator = makeMethodDecorator<MappingItem>();
 export function mapping({
   method,
   path,
+  prefix,
   middleware,
 }: {
   method?: RouterMethod | RouterMethod[],
   path?: RouterPath,
+  prefix?: string,
   middleware?: Middleware | Middleware[],
 } = {}) {
   return mappingDecorator.wrap((descriptor, target, propertyKey) => {
@@ -47,6 +50,9 @@ export function mapping({
       } else {
         path = `/${propertyKey}`;
       }
+    }
+    if (prefix && typeof path === 'string') {
+      path = `${prefix}${path}`;
     }
     return {
       methods: method ? (Array.isArray(method) ? method : [method]) : ['GET'],

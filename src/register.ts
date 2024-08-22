@@ -9,11 +9,17 @@ import { debug } from './utils';
 /**
  * 取得控制器路由对象
  */
-export function getControllerRouter({ option, middlewares, mappingList, target }: ControllerItem) {
+export function getControllerRouter({ option, mappingList, target }: ControllerItem) {
   debug('@controller(%o) %o', option, target);
   const router = new Router(option);
-  if (middlewares && middlewares.length > 0) {
-    router.use(...middlewares);
+  if (option.middleware) {
+    if (Array.isArray(option.middleware)) {
+      if (option.middleware.length) {
+        router.use(...option.middleware);
+      }
+    } else {
+      router.use(option.middleware);
+    }
   }
   for (const item of mappingList) {
     debug('@mapping(%o)', item);
@@ -62,23 +68,31 @@ export class ControllerRegister {
   /**
    * 注册控制器类
    * @param target 控制器类
+   * @param prefix 路由前缀
    * @returns
    *  - true 注册成功
    *  - false 无效控制器
    */
-  registerClass(target: ControllerClass) {
+  registerClass(target: ControllerClass, prefix?: string) {
     debug('registerClass(%o)', target);
     const mappingList = mappingDecorator.getMethods(target.prototype);
     if (mappingList.length > 0) {
       scope('prototype', false)(target);
-      const option = controllerDecorator.getValue(target);
+      const option = controllerDecorator.getValue(target) || {};
       const controllerItem: ControllerItem = {
         target,
         option,
         mappingList,
       };
-      if (option && option.middleware) {
-        controllerItem.middlewares = (Array.isArray(option.middleware) ? option.middleware : [option.middleware]);
+      if (prefix) {
+        if (!prefix.startsWith('/')) {
+          prefix = `/${prefix}`;
+        }
+        if (!option.prefix) {
+          option.prefix = prefix;
+        } else if (!option.prefix.startsWith('/')) {
+          option.prefix = `${prefix}/${option.prefix}`;
+        }
       }
       this.register(controllerItem);
       return true;

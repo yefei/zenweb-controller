@@ -63,3 +63,53 @@ export class Controller2 {
   }
 }
 ```
+
+### 统一前缀
+例如后台管理接口中需要统一添加 /admin 作为前缀，则可以这样使用
+
+```ts file=src/controller/admin/_helper.ts
+import { mapping, Middleware, RouterMethod, RouterPath } from 'zenweb';
+
+/**
+ * 管理员验证中间件
+ */
+export function adminRequired(): Middleware {
+  return function (ctx, next) {
+    if (!ctx.admin) {
+      fail('没有权限');
+    }
+    return next();
+  }
+}
+
+/**
+ * 管理后台路径映射
+ */
+export function adminMapping(method?: RouterMethod, path?: RouterPath, ...middleware: Middleware[]) {
+  return mapping({
+    method,
+    prefix: '/admin',
+    path,
+    middleware: [adminRequired(), ...middleware],
+  });
+}
+```
+
+```ts file=src/controller/admin/index.ts
+import { Context, Next, mapping, controller } from 'zenweb';
+import { adminMapping } from './_helper';
+
+export class IndexController {
+  // 等同于 @mapping({ path: '/admin/', method: 'GET', middleware: [adminRequired()] })
+  @adminMapping()
+  index() {
+    return 'admin index';
+  }
+
+  // 等同于 @mapping({ path: '/admin/create_user', method: 'POST', middleware: [adminRequired()] })
+  @adminMapping('POST')
+  create_user() {
+    return 'create user';
+  }
+}
+```

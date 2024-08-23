@@ -1,3 +1,4 @@
+import { Context } from '@zenweb/core';
 import { controller, mapping } from '../../../../src';
 
 export class SubTestController {
@@ -14,5 +15,10 @@ export class SubTest2Controller {
   @mapping()
   index() {
     return 'sub2/index';
+  }
+
+  @mapping()
+  'sub3/:id'(ctx: Context) {
+    return 'sub3/' + ctx.params.id;
   }
 }

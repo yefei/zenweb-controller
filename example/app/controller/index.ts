@@ -1,5 +1,5 @@
 import { Context, Middleware } from '@zenweb/core';
-import { init, inject, scope } from '@zenweb/inject';
+import { component, init } from '@zenweb/inject';
 import { controller, mapping } from '../../../src';
 
 function actionLog(): Middleware {
@@ -26,7 +26,9 @@ function loginRequired(): Middleware {
 })
 export class Simple {
   // 自动注入
-  @inject ctx!: Context;
+  constructor(
+    private ctx: Context,
+  ) {}
 
   @init // 控制器每次被请求时候都会执行
   init(ctx: Context) {
@@ -36,7 +38,7 @@ export class Simple {
   @mapping()
   index() {
     console.log('index')
-    return 'index';
+    return 'index:' + this.ctx.ip;
   }
 
   // 映射一个路径， 不指定参数默认为 `GET /方法名`
@@ -63,7 +65,7 @@ export class Simple {
   }
 }
 
-@scope('request')
+@component('request')
 export class RequestController {
   @mapping()
   req() {
@@ -72,7 +74,7 @@ export class RequestController {
 }
 
 @controller({ prefix: '/singleton' })
-@scope('singleton')
+@component('singleton')
 export class SingletonController {
   i = 0;
 

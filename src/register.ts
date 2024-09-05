@@ -1,6 +1,6 @@
 /// <reference types="@zenweb/result" />
 import { Context } from '@zenweb/core';
-import { scope } from '@zenweb/inject';
+import { component } from '@zenweb/inject';
 import { Router } from '@zenweb/router';
 import { controllerDecorator, mappingDecorator } from './controller';
 import { ControllerClass, ControllerItem } from './types';
@@ -50,7 +50,7 @@ export function getControllerRouter({ option, mappingList, target }: ControllerI
 /**
  * 控制器注册器
  */
-@scope('singleton')
+@component('singleton')
 export class ControllerRegister {
   /**
    * 已注册的控制器类
@@ -75,9 +75,9 @@ export class ControllerRegister {
    */
   registerClass(target: ControllerClass, prefix?: string) {
     debug('registerClass(%o)', target);
+    component('request', false)(target);
     const mappingList = mappingDecorator.getMethods(target.prototype);
     if (mappingList.length > 0) {
-      scope('prototype', false)(target);
       const option = controllerDecorator.getValue(target) || {};
       const controllerItem: ControllerItem = {
         target,

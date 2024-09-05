@@ -1,5 +1,8 @@
 # Changelog
 
+## [4.0.0] - 2024-9-5
+- 更新 @zenweb/inject
+
 ## [3.17.0] - 2024-8-22
 - 新增 autoControllerPrefix 选项，可以自动为控制器类添加路径前缀
 - @mapping() 方法增加 { prefix } 参数。并给出使用场景

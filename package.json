@@ -1,7 +1,7 @@
 {
   "name": "@zenweb/controller",
   "packageManager": "yarn@4.0.2",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Zenweb Controller module",
   "exports": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -38,10 +38,10 @@
     "typescript": "~5.3.3"
   },
   "dependencies": {
-    "@zenweb/core": ">=4.3.2",
-    "@zenweb/inject": ">=4.1.1",
-    "@zenweb/result": ">=4.0.0",
-    "@zenweb/router": ">=3.3.1",
+    "@zenweb/core": "^4.3.2",
+    "@zenweb/inject": "^4.1.1",
+    "@zenweb/result": "^4.0.0",
+    "@zenweb/router": "^3.3.1",
     "decorator-make": "^1.5.0",
     "globby": "11.0.4"
   }

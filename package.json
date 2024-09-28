@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.31",
-    "@zenweb/messagecode": "^3.4.0",
+    "@zenweb/messagecode": "^4",
     "cross-env": "^7.0.3",
     "react": "^18.2.0",
     "rimraf": "^4.1.2",
@@ -38,10 +38,10 @@
     "typescript": "~5.3.3"
   },
   "dependencies": {
-    "@zenweb/core": "^4.3.2",
-    "@zenweb/inject": "^4.1.1",
-    "@zenweb/result": "^4.0.0",
-    "@zenweb/router": "^3.3.1",
+    "@zenweb/core": "^4",
+    "@zenweb/inject": "^4",
+    "@zenweb/result": "^4",
+    "@zenweb/router": "^4",
     "decorator-make": "^1.5.0",
     "globby": "11.0.4"
   }

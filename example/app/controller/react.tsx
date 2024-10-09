@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { mapping } from '../../../src';
+import React from 'react';
+import { mapping } from '../../../src/index.js';
 
 function alert(s: string) {}
 

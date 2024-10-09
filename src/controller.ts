@@ -1,7 +1,7 @@
 import { Middleware } from '@zenweb/core';
 import { RouterMethod, RouterPath } from '@zenweb/router';
 import { makeClassDecorator, makeMethodDecorator } from 'decorator-make';
-import { ControllerOption, MappingItem } from './types';
+import { ControllerOption, MappingItem } from './types.js';
 
 export const mappingDecorator = makeMethodDecorator<MappingItem>();
 

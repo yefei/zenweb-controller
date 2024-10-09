@@ -1,10 +1,11 @@
-import { sep } from 'path';
+import { sep } from 'node:path';
 import { SetupFunction } from '@zenweb/core';
-import { ControllerSetupOption } from './types';
-import { ControllerRegister } from './register';
-import { debug, discoverControllerClass } from './utils';
-export * from './controller';
-export * from './types';
+import { ControllerSetupOption } from './types.js';
+import { ControllerRegister } from './register.js';
+import { debug, discoverControllerClass } from './utils.js';
+
+export * from './controller.js';
+export * from './types.js';
 export {
   ControllerRegister,
   discoverControllerClass,

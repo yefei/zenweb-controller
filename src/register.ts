@@ -2,9 +2,9 @@
 import { Context } from '@zenweb/core';
 import { component } from '@zenweb/inject';
 import { Router } from '@zenweb/router';
-import { controllerDecorator, mappingDecorator } from './controller';
-import { ControllerClass, ControllerItem } from './types';
-import { debug } from './utils';
+import { controllerDecorator, mappingDecorator } from './controller.js';
+import { ControllerClass, ControllerItem } from './types.js';
+import { debug } from './utils.js';
 
 /**
  * 取得控制器路由对象

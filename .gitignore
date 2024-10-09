@@ -11,7 +11,7 @@ run/
 *.sw*
 *.un~
 .npmrc
-lib/
+dist/
 pnpm-lock.yaml
 .vscode/
 .yarn/

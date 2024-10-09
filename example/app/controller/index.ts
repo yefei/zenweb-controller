@@ -1,6 +1,6 @@
 import { Context, Middleware } from '@zenweb/core';
 import { component, init } from '@zenweb/inject';
-import { controller, mapping } from '../../../src';
+import { controller, mapping } from '../../../src/index.js';
 
 function actionLog(): Middleware {
   return async function (ctx, next) {

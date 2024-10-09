@@ -3,7 +3,7 @@ import modInject from '@zenweb/inject';
 import modRouter from '@zenweb/router';
 import modResult from '@zenweb/result';
 import messagecode from '@zenweb/messagecode';
-import modController from '../src';
+import modController from '../src/index.js';
 
 const app = new Core();
 app.setup(modInject());

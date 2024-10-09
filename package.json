@@ -1,18 +1,17 @@
 {
   "name": "@zenweb/controller",
-  "packageManager": "yarn@4.0.2",
-  "version": "4.0.3",
+  "type": "module",
+  "version": "5.0.0",
   "description": "Zenweb Controller module",
-  "exports": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "exports": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "scripts": {
-    "vscode": "yarn dlx @yarnpkg/sdks vscode",
-    "build": "rimraf lib && tsc",
-    "prepack": "yarn run build",
-    "dev": "cd example && cross-env DEBUG=\\* ts-node app"
+    "build": "rimraf dist && tsc",
+    "prepack": "npm run build",
+    "dev": "cd example && cross-env DEBUG=\\* node --loader ts-node/esm app.ts"
   },
   "homepage": "https://zenweb.node.ltd",
   "author": {
@@ -30,18 +29,18 @@
   "devDependencies": {
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.31",
-    "@zenweb/messagecode": "^4",
+    "@zenweb/messagecode": "^5.0.0",
     "cross-env": "^7.0.3",
     "react": "^18.2.0",
     "rimraf": "^4.1.2",
     "ts-node": "^10.9.1",
-    "typescript": "~5.3.3"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@zenweb/core": "^4",
-    "@zenweb/inject": "^4",
-    "@zenweb/result": "^4",
-    "@zenweb/router": "^4",
+    "@zenweb/core": "^5.1.0",
+    "@zenweb/inject": "^5.1.0",
+    "@zenweb/result": "^5.0.0",
+    "@zenweb/router": "^5.0.0",
     "decorator-make": "^1.5.0",
     "globby": "11.0.4"
   }

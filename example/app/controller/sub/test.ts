@@ -1,5 +1,5 @@
 import { Context } from '@zenweb/core';
-import { controller, mapping } from '../../../../src';
+import { controller, mapping } from '../../../../src/index.js';
 
 export class SubTestController {
   @mapping()

@@ -1,5 +1,8 @@
 # Changelog
 
+## [5.0.2] - 2024-10-14
+- fix: Windows autoControllerPrefix path sep bug
+
 ## [5.0.1] - 2024-10-14
 - fix: Windows 导入模块问题
 

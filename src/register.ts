@@ -40,8 +40,7 @@ export function getControllerRouter({ option, mappingList, target }: ControllerI
     if (item.methods.includes('ALL')) {
       router.all(item.path, ...mappingMiddlewares);
     } else {
-      // <any>item.path 实际上路由参数支持数组形式，只是 ts 文件没有正确描述
-      router.register(<any>item.path, item.methods, mappingMiddlewares);
+      router.register(item.path, item.methods, ...mappingMiddlewares);
     }
   }
   return router;
@@ -109,7 +108,7 @@ export class ControllerRegister {
   addToRouter(router: Router) {
     debug('addToRouter(%o)', router)
     for (const item of this.controllers) {
-      router.use(getControllerRouter(item).routes());
+      router.add(getControllerRouter(item));
     }
   }
 }

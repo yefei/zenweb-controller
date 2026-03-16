@@ -1,5 +1,8 @@
 # Changelog
 
+## [6.0.0] - 2026-3-16
+- update: @zenweb/router ^6.0
+
 ## [5.0.2] - 2024-10-14
 - fix: Windows autoControllerPrefix path sep bug
 

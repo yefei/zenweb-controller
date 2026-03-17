@@ -1,5 +1,4 @@
 /// <reference types="@zenweb/result" />
-import { Context } from '@zenweb/core';
 import { component } from '@zenweb/inject';
 import { Router } from '@zenweb/router';
 import { controllerDecorator, mappingDecorator } from './controller.js';
@@ -7,41 +6,34 @@ import { ControllerClass, ControllerItem } from './types.js';
 import { debug } from './utils.js';
 
 /**
- * 取得控制器路由对象
+ * 注册控制器路由
  */
-export function getControllerRouter({ option, mappingList, target }: ControllerItem) {
+export function registerControllerRouter(router: Router, { option, mappingList, target }: ControllerItem) {
   debug('@controller(%o) %o', option, target);
-  const router = new Router(option);
-  if (option.middleware) {
-    if (Array.isArray(option.middleware)) {
-      if (option.middleware.length) {
-        router.use(...option.middleware);
-      }
-    } else {
-      router.use(option.middleware);
-    }
-  }
+  const controllerMiddlewares = option.middleware ? (Array.isArray(option.middleware) ? option.middleware : [option.middleware]) : [];
   for (const item of mappingList) {
     debug('@mapping(%o)', item);
-    const mappingMiddlewares = [
-      ...item.middleware,
-      async (ctx: Context) => {
-        const controller = await ctx.injector.getInstance(target);
-        const data = await ctx.injector.apply(controller, item);
-        if (typeof data !== 'undefined') {
-          if (ctx.success) {
-            await ctx.success(data);
-          } else {
-            ctx.body = data;
+    router.register({
+      prefix: option.prefix,
+      path: item.path,
+      method: item.methods,
+      middleware: [
+        ...controllerMiddlewares,
+        ...item.middleware,
+        async (ctx, next) => {
+          const controller = await ctx.injector.getInstance(target);
+          const data = await ctx.injector.apply(controller, item);
+          if (typeof data !== 'undefined') {
+            if (ctx.success) {
+              await ctx.success(data);
+            } else {
+              ctx.body = data;
+            }
           }
-        }
-      },
-    ];
-    if (item.methods.includes('ALL')) {
-      router.all(item.path, ...mappingMiddlewares);
-    } else {
-      router.register(item.path, item.methods, ...mappingMiddlewares);
-    }
+          return next();
+        },
+      ],
+    });
   }
   return router;
 }
@@ -108,7 +100,7 @@ export class ControllerRegister {
   addToRouter(router: Router) {
     debug('addToRouter(%o)', router)
     for (const item of this.controllers) {
-      router.add(getControllerRouter(item));
+      registerControllerRouter(router, item);
     }
   }
 }

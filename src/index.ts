@@ -32,8 +32,6 @@ export default function setup(opt?: ControllerSetupOption): SetupFunction {
       }
     }
 
-    setup.after(() => {
-      controllerRegister.addToRouter(setup.core.router);
-    });
+    controllerRegister.addToRouter(setup.core.router);
   }
 }

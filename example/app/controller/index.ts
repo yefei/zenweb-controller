@@ -21,7 +21,7 @@ function loginRequired(): Middleware {
 
 // 控制器全局中间件
 @controller({
-  prefix: '/prefix/',
+  prefix: '/prefix',
   middleware: actionLog(),
 })
 export class Simple {
@@ -73,7 +73,7 @@ export class RequestController {
   }
 }
 
-@controller({ prefix: '/singleton/' })
+@controller({ prefix: '/singleton' })
 @component('singleton')
 export class SingletonController {
   i = 0;

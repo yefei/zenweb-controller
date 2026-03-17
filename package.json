@@ -1,7 +1,7 @@
 {
   "name": "@zenweb/controller",
   "type": "module",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "Zenweb Controller module",
   "exports": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -40,7 +40,7 @@
     "@zenweb/core": "^5.2.1",
     "@zenweb/inject": "^5.1.0",
     "@zenweb/result": "^5.0.0",
-    "@zenweb/router": "^6.0.3",
+    "@zenweb/router": "^6.3.0",
     "decorator-make": "^1.5.0",
     "globby": "11.0.4"
   }

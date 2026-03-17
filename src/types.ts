@@ -1,4 +1,3 @@
-import { RouterOptions } from '@zenweb/router';
 import { Middleware } from '@zenweb/core';
 import { RouterMethod, RouterPath } from '@zenweb/router';
 import { MethodDescriptor } from 'decorator-make';
@@ -22,7 +21,15 @@ export interface MappingItem extends MethodDescriptor {
 /**
  * 控制器选项
  */
-export interface ControllerOption extends RouterOptions {
+export interface ControllerOption {
+  /**
+   * 在控制器中的每个 \@mapping path 上添加前缀
+   */
+  prefix?: string;
+
+  /**
+   * 在控制器中的每个 \@mapping 上添加前置中间件
+   */
   middleware?: Middleware | Middleware[];
 }
 

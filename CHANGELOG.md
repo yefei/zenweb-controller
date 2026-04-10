@@ -1,5 +1,8 @@
 # Changelog
 
+## [6.2.1] - 2026-4-10
+- fix: 新增快捷方法 method 无效
+
 ## [6.2.0] - 2026-4-10
 - refactor: TC39 装饰器命名规范
 - new: 新增快捷方法 @Get, @Post, @Put, @Patch, @Delete, @All

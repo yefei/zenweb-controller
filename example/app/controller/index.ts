@@ -1,6 +1,6 @@
 import { Context, Middleware } from '@zenweb/core';
 import { Component, Init } from '@zenweb/inject';
-import { All, Controller, Get, Mapping } from '../../../src/index.js';
+import { All, Controller, Get, Mapping, Post } from '../../../src/index.js';
 
 function actionLog(): Middleware {
   return async function (ctx, next) {
@@ -21,7 +21,6 @@ function loginRequired(): Middleware {
 
 // 控制器全局中间件
 @Controller({
-  prefix: '/prefix',
   middleware: actionLog(),
 })
 export class Simple {
@@ -57,6 +56,11 @@ export class Simple {
   })
   aaa() {
     return 'aaa';
+  }
+
+  @Post()
+  post() {
+    return 'POST method';
   }
 
   @All()

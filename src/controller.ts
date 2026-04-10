@@ -78,7 +78,7 @@ function SimpleMapping(method?: RouterMethod, path?: RouterPath | Middleware, ..
     middleware.unshift(path);
     path = undefined;
   }
-  return Mapping({ method: 'GET', path, middleware });
+  return Mapping({ method, path, middleware });
 }
 
 /**

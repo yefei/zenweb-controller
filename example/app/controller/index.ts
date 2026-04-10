@@ -78,7 +78,7 @@ export class RequestController {
 export class SingletonController {
   i = 0;
 
-  @Get()
+  @Get(actionLog())
   index() {
     return this.i++;
   }

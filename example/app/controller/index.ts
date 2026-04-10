@@ -1,5 +1,5 @@
 import { Context, Middleware } from '@zenweb/core';
-import { Component, Init } from '@zenweb/inject';
+import { Injectable, Init } from '@zenweb/inject';
 import { All, Controller, Get, Mapping, Post } from '../../../src/index.js';
 
 function actionLog(): Middleware {
@@ -69,7 +69,7 @@ export class Simple {
   }
 }
 
-@Component('request')
+@Injectable('request')
 export class RequestController {
   @Get()
   req() {
@@ -78,7 +78,7 @@ export class RequestController {
 }
 
 @Controller({ prefix: '/singleton' })
-@Component('singleton')
+@Injectable('singleton')
 export class SingletonController {
   i = 0;
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import { mapping } from '../../../src/index.js';
+import { Mapping } from '../../../src/index.js';
 
 function alert(s: string) {}
 
 export class XXX {
-  @mapping({ path: '/jsx' })
+  @Mapping({ path: '/jsx' })
   index() {
     const btn = <div id="ddd" onClick={() => alert('Hello')} style={{ backgroundColor: 'red' }}>
       <button>Hello</button>

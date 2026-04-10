@@ -1,12 +1,12 @@
-import { mapping } from '../../../../src/index.js';
+import { Mapping } from '../../../../src/index.js';
 
 export class IndexController {
-  @mapping()
+  @Mapping()
   index() {
     return 'sub-index'
   }
 
-  @mapping()
+  @Mapping()
   list() {
     return 'sub-list'
   }

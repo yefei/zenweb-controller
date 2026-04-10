@@ -1,5 +1,5 @@
 /// <reference types="@zenweb/result" />
-import { component } from '@zenweb/inject';
+import { Component } from '@zenweb/inject';
 import { Router } from '@zenweb/router';
 import { controllerDecorator, mappingDecorator } from './controller.js';
 import { ControllerClass, ControllerItem } from './types.js';
@@ -9,10 +9,10 @@ import { debug } from './utils.js';
  * 注册控制器路由
  */
 export function registerControllerRouter(router: Router, { option, mappingList, target }: ControllerItem) {
-  debug('@controller(%o) %o', option, target);
+  debug('@Controller(%o) %o', option, target);
   const controllerMiddlewares = option.middleware ? (Array.isArray(option.middleware) ? option.middleware : [option.middleware]) : [];
   for (const item of mappingList) {
-    debug('@mapping(%o)', item);
+    debug('@Mapping(%o)', item);
     router.register({
       prefix: option.prefix,
       path: item.path,
@@ -41,7 +41,7 @@ export function registerControllerRouter(router: Router, { option, mappingList, 
 /**
  * 控制器注册器
  */
-@component('singleton')
+@Component('singleton')
 export class ControllerRegister {
   /**
    * 已注册的控制器类
@@ -66,7 +66,7 @@ export class ControllerRegister {
    */
   registerClass(target: ControllerClass, prefix?: string) {
     debug('registerClass(%o)', target);
-    component('request', false)(target);
+    Component('request', false)(target);
     const mappingList = mappingDecorator.getMethods(target.prototype);
     if (mappingList.length > 0) {
       const option = controllerDecorator.getValue(target) || {};

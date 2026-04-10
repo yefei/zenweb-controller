@@ -1,8 +1,8 @@
-import { mapping } from '../../../../../src/index.js';
+import { Mapping } from '../../../../../src/index.js';
 
 export class IndexController {
 
-  @mapping()
+  @Mapping()
   list() {
     return 'subsub-list'
   }

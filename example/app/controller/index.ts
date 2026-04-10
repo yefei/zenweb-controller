@@ -1,6 +1,6 @@
 import { Context, Middleware } from '@zenweb/core';
-import { component, init } from '@zenweb/inject';
-import { controller, mapping } from '../../../src/index.js';
+import { Component, Init } from '@zenweb/inject';
+import { All, Controller, Get, Mapping } from '../../../src/index.js';
 
 function actionLog(): Middleware {
   return async function (ctx, next) {
@@ -20,7 +20,7 @@ function loginRequired(): Middleware {
 }
 
 // 控制器全局中间件
-@controller({
+@Controller({
   prefix: '/prefix',
   middleware: actionLog(),
 })
@@ -30,27 +30,27 @@ export class Simple {
     private ctx: Context,
   ) {}
 
-  @init // 控制器每次被请求时候都会执行
+  @Init // 控制器每次被请求时候都会执行
   init(ctx: Context) {
     console.log('init:', ctx.path);
   }
 
-  @mapping()
+  @Get()
   index() {
     console.log('index')
     return 'index:' + this.ctx.ip;
   }
 
   // 映射一个路径， 不指定参数默认为 `GET /方法名`
-  @mapping()
-  @mapping({ path: '/s2' })
+  @Get()
+  @Get('/s2')
   simple() {
     console.log('simple')
     return 'simple';
   }
 
   // 每个方法都可以自定义中间件
-  @mapping({
+  @Mapping({
     method: ['POST', 'GET'],
     path: ['/aaa', '/bbb'],
     middleware: loginRequired(),
@@ -59,26 +59,26 @@ export class Simple {
     return 'aaa';
   }
 
-  @mapping({ method: 'ALL' })
+  @All()
   all() {
     return 'any method';
   }
 }
 
-@component('request')
+@Component('request')
 export class RequestController {
-  @mapping()
+  @Get()
   req() {
     return 'req';
   }
 }
 
-@controller({ prefix: '/singleton' })
-@component('singleton')
+@Controller({ prefix: '/singleton' })
+@Component('singleton')
 export class SingletonController {
   i = 0;
 
-  @mapping()
+  @Get()
   index() {
     return this.i++;
   }

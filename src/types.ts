@@ -23,12 +23,12 @@ export interface MappingItem extends MethodDescriptor {
  */
 export interface ControllerOption {
   /**
-   * 在控制器中的每个 \@mapping path 上添加前缀
+   * 在控制器中的每个 \@Mapping path 上添加前缀
    */
   prefix?: string;
 
   /**
-   * 在控制器中的每个 \@mapping 上添加前置中间件
+   * 在控制器中的每个 \@Mapping 上添加前置中间件
    */
   middleware?: Middleware | Middleware[];
 }
@@ -72,7 +72,7 @@ export interface ControllerSetupOption {
    * 是否自动添加控制器前缀
    * - 自动前缀是根据路径名自动生成的
    * - 如果文件名使用 index 则自动忽略
-   * - 如果 \@controller({ prefix: '/somepath' }) 前缀为 '/' 也会忽略
+   * - 如果 \@Controller({ prefix: '/somepath' }) 前缀为 '/' 也会忽略
    * @default false
    */
   autoControllerPrefix?: boolean;

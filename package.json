@@ -1,7 +1,7 @@
 {
   "name": "@zenweb/controller",
   "type": "module",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Zenweb Controller module",
   "exports": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@types/node": "^20.19.37",
     "@types/react": "^18.3.28",
-    "@zenweb/messagecode": "^5.1.1",
+    "@zenweb/messagecode": "^5.2.0",
     "cross-env": "^7.0.3",
     "react": "^18.3.1",
     "rimraf": "^4.4.1",
@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "@zenweb/core": "^5.2.1",
-    "@zenweb/inject": "^5.1.0",
-    "@zenweb/result": "^5.0.0",
+    "@zenweb/inject": "^5.2.0",
+    "@zenweb/result": "^5.1.0",
     "@zenweb/router": "^6.3.0",
     "decorator-make": "^1.5.0",
     "globby": "11.0.4"
